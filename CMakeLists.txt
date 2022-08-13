@@ -15,6 +15,11 @@
 ## License:  Revised BSD License, see LICENSE.TXT file included in the project
 ## Authors:  Johannes Bruder (STACKFORCE), Miguel Luis (Semtech)
 ##
+# set(CMAKE_C_COMPILER "C:\Program Files (x86)\GNU Arm Embedded Toolchain\10 2020-q4-major\bin\)
+set(TOOLCHAIN_PREFIX "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major")
+#set(CMAKE_C_COMPILER "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/bin/arm-none-eabi-gcc.exe")
+#set(CMAKE_CXX_COMPILER "C:/Program Files (x86)/GNU Arm Embedded Toolchain/10 2020-q4-major/bin/arm-none-eabi-g++.exe")
+
 project(loramac-node)
 cmake_minimum_required(VERSION 3.6)
 
