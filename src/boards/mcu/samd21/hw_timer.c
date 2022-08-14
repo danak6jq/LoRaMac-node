@@ -50,6 +50,11 @@
 #include <hal_atomic.h>
 #include <hpl_irq.h>
 
+#include <hpl_pm_base.h>
+#include <hpl_gclk_base.h>
+#include <peripheral_clk_config.h>
+#include <hpl_rtc_config.h>
+
 #include "board-config.h"
 #include "gpio.h"
 #include "hw_timer.h"
@@ -80,20 +85,24 @@ void HwTimerInit(void)
     GpioInit( &DbgHwTmrPin, HWTMR_DBG_PIN_0, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 #endif
 
-    hri_mclk_set_APBAMASK_RTC_bit(MCLK);
-    hri_rtcmode0_write_CTRLA_reg(RTC, RTC_MODE0_CTRLA_SWRST);
-    hri_rtcmode0_wait_for_sync(RTC, RTC_MODE0_SYNCBUSY_SWRST);
+    // enable clock
+	_pm_enable_bus_clock(PM_BUS_APBA, RTC);
+	_gclk_enable_channel(RTC_GCLK_ID, CONF_GCLK_RTC_SRC);
 
-    hri_rtcmode0_write_CTRLA_reg(RTC, RTC_MODE0_CTRLA_PRESCALER(0) |
-                                 RTC_MODE0_CTRLA_COUNTSYNC);
-    hri_rtcmode0_write_EVCTRL_reg(RTC, RTC_MODE0_EVCTRL_CMPEO0);
-    hri_rtcmode0_write_COMP_reg(RTC, 0, ( uint32_t )COMPARE_COUNT_MAX_VALUE);
-    hri_rtcmode0_set_INTEN_CMP0_bit(RTC);
+    // configure timer
+	hri_rtcmode0_write_CTRL_reg(RTC, RTC_MODE0_CTRL_SWRST);
+	hri_rtcmode0_wait_for_sync(RTC);
+	hri_rtcmode0_write_CTRL_reg(RTC,
+      RTC_MODE0_CTRL_MODE(0) |
+      RTC_MODE0_CTRL_PRESCALER(CONF_RTC_PRESCALER) );
+	hri_rtcmode0_write_COMP_COMP_bf(RTC, 0, (uint32_t)COMPARE_COUNT_MAX_VALUE);
+	hri_rtcmode0_set_INTEN_CMP0_bit(RTC);
 
-    NVIC_EnableIRQ(RTC_IRQn);
-    hri_rtcmode0_write_COUNT_reg(RTC, 0);
-    hri_rtcmode0_wait_for_sync(RTC, RTC_MODE0_SYNCBUSY_COUNT);
-    hri_rtcmode0_set_CTRLA_ENABLE_bit(RTC);
+    // start the timer
+	NVIC_EnableIRQ(RTC_IRQn);
+	hri_rtcmode0_write_COUNT_COUNT_bf(RTC, 0);
+	hri_rtcmode0_wait_for_sync(RTC);
+	hri_rtcmode0_set_CTRL_ENABLE_bit(RTC);
 }
 
 /**
@@ -128,7 +137,7 @@ bool HwTimerLoadAbsoluteTicks(uint32_t ticks)
 
     RTC_CRITICAL_SECTION_ENTER();
     hri_rtcmode0_write_COMP_reg(RTC, 0, ticks);
-    hri_rtcmode0_wait_for_sync(RTC, RTC_MODE0_SYNCBUSY_MASK);
+   	hri_rtcmode0_wait_for_sync(RTC);
     uint32_t current = hri_rtcmode0_read_COUNT_reg(RTC);
     RTC_CRITICAL_SECTION_LEAVE();
 
@@ -149,7 +158,7 @@ bool HwTimerLoadAbsoluteTicks(uint32_t ticks)
 */
 uint32_t HwTimerGetTime(void)
 {
-    hri_rtcmode0_wait_for_sync(RTC, RTC_MODE0_SYNCBUSY_COUNT);
+   	hri_rtcmode0_wait_for_sync(RTC);
     return hri_rtcmode0_read_COUNT_reg(RTC);
 }
 

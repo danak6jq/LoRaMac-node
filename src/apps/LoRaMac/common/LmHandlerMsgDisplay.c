@@ -112,6 +112,8 @@ void PrintHexBuffer( uint8_t *buffer, uint8_t size )
 
 void DisplayNvmDataChange( LmHandlerNvmContextStates_t state, uint16_t size )
 {
+    return;
+    
     if( state == LORAMAC_HANDLER_NVM_STORE )
     {
         printf( "\n###### ============ CTXS STORED ============ ######\n" );
@@ -126,6 +128,8 @@ void DisplayNvmDataChange( LmHandlerNvmContextStates_t state, uint16_t size )
 
 void DisplayNetworkParametersUpdate( CommissioningParams_t *commissioningParams )
 {
+    return;
+
     printf( "DevEui      : %02X", commissioningParams->DevEui[0] );
     for( int i = 1; i < 8; i++ )
     {
@@ -148,6 +152,8 @@ void DisplayNetworkParametersUpdate( CommissioningParams_t *commissioningParams 
 
 void DisplayMacMcpsRequestUpdate( LoRaMacStatus_t status, McpsReq_t *mcpsReq, TimerTime_t nextTxIn )
 {
+    return;
+
     switch( mcpsReq->Type )
     {
         case MCPS_CONFIRMED:
@@ -188,6 +194,8 @@ void DisplayMacMcpsRequestUpdate( LoRaMacStatus_t status, McpsReq_t *mcpsReq, Ti
 
 void DisplayMacMlmeRequestUpdate( LoRaMacStatus_t status, MlmeReq_t *mlmeReq, TimerTime_t nextTxIn )
 {
+    return;
+    
     switch( mlmeReq->Type )
     {
         case MLME_JOIN:
@@ -235,6 +243,9 @@ void DisplayMacMlmeRequestUpdate( LoRaMacStatus_t status, MlmeReq_t *mlmeReq, Ti
 
 void DisplayJoinRequestUpdate( LmHandlerJoinParams_t *params )
 {
+    
+    return;
+
     if( params->CommissioningParams->IsOtaaActivation == true )
     {
         if( params->Status == LORAMAC_HANDLER_SUCCESS )
@@ -260,6 +271,8 @@ void DisplayJoinRequestUpdate( LmHandlerJoinParams_t *params )
 void DisplayTxUpdate( LmHandlerTxParams_t *params )
 {
     MibRequestConfirm_t mibGet;
+
+    return;
 
     if( params->IsMcpsConfirm == 0 )
     {
@@ -345,6 +358,8 @@ void DisplayTxUpdate( LmHandlerTxParams_t *params )
 void DisplayRxUpdate( LmHandlerAppData_t *appData, LmHandlerRxParams_t *params )
 {
     const char *slotStrings[] = { "1", "2", "C", "C Multicast", "B Ping-Slot", "B Multicast Ping-Slot" };
+
+    return;
 
     if( params->IsMcpsIndication == 0 )
     {

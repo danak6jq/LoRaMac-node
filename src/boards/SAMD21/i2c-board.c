@@ -42,6 +42,8 @@ struct i2c_m_sync_desc I2C_INSTANCE;
 
 void I2cMcuInit( I2c_t* obj, I2cId_t i2cId, PinNames scl, PinNames sda )
 {
+    #if 0
+    // XXX: port
     obj->I2cId = i2cId;
 
     // Clock initialization
@@ -59,6 +61,7 @@ void I2cMcuInit( I2c_t* obj, I2cId_t i2cId, PinNames scl, PinNames sda )
     gpio_set_pin_function( scl, PINMUX_PA17C_SERCOM1_PAD1 );
 
     i2c_m_sync_enable( &I2C_INSTANCE );
+    #endif
 }
 
 void I2cMcuDeInit( I2c_t* obj )

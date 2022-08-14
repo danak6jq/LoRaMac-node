@@ -181,6 +181,8 @@ struct _timer_hpl_interface *_rtc_get_timer(void)
 	return NULL;
 }
 
+#if 0
+// XXX: need to remove this file entirely
 /**
  * \brief Rtc interrupt handler
  */
@@ -188,3 +190,4 @@ void RTC_Handler(void)
 {
 	_rtc_timer_interrupt_handler(_rtc_dev);
 }
+#endif

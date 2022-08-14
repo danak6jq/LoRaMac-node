@@ -257,13 +257,10 @@ extern Uart_t Uart1;
  */
 int main( void )
 {
+
+
     BoardInitMcu( );
     BoardInitPeriph( );
-
-    while (1) {
-        GpioWrite(&LedD13, 1);
-    }
-
 
     TimerInit( &Led1Timer, OnLed1TimerEvent );
     TimerSetValue( &Led1Timer, 25 );
@@ -279,9 +276,11 @@ int main( void )
 
     const Version_t appVersion = { .Value = FIRMWARE_VERSION };
     const Version_t gitHubVersion = { .Value = GITHUB_VERSION };
+#if 0
     DisplayAppInfo( "periodic-uplink-lpp", 
                     &appVersion,
                     &gitHubVersion );
+#endif
 
     if ( LmHandlerInit( &LmHandlerCallbacks, &LmHandlerParams ) != LORAMAC_HANDLER_SUCCESS )
     {

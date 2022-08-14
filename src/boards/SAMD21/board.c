@@ -29,6 +29,8 @@
 #include <hal_spi_m_sync.h>
 #include <hal_usart_sync.h>
 #include <hpl_rtc_base.h>
+#include <hpl_gclk_base.h>
+
 #include "board-config.h"
 #include "utilities.h"
 #include "delay.h"
@@ -71,20 +73,16 @@ void BoardInitPeriph( void )
 {
     GpioInit( &LedRx, LED_RX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
     GpioInit( &LedTx, LED_TX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    // GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
 }
 
 void BoardInitMcu( void )
 {
-    GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
     init_mcu( );
-    delay_init( SysTick );
+    delay_init( SysTick );  // XXX: does this work?
 
-    GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
-    GpioWrite( &LedD13, 1);
-
-    hri_gclk_write_PCHCTRL_reg( GCLK, EIC_GCLK_ID, CONF_GCLK_EIC_SRC | ( 1 << GCLK_PCHCTRL_CHEN_Pos ) );
-    hri_mclk_set_APBAMASK_EIC_bit( MCLK );
+    // turn on EIC clock
+	_gclk_enable_channel(EIC_GCLK_ID, CONF_GCLK_EIC_SRC);
 
     RtcInit( );
 
@@ -97,8 +95,8 @@ void BoardInitMcu( void )
     SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
     SX1276IoInit( );
 
-    // XXX:
 #if 0
+    // XXX:
     I2cInit( &I2c, I2C_1, I2C_SCL, I2C_SDA );
 #endif
 
@@ -160,7 +158,9 @@ void BoardLowPowerHandler( void )
  */
 int _write( int fd, const void *buf, size_t count )
 {
+#if 0
     while( UartPutBuffer( &Uart1, ( uint8_t* )buf, ( uint16_t )count ) != 0 ){ };
+#endif
     return count;
 }
 

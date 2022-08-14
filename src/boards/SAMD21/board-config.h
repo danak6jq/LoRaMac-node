@@ -65,8 +65,8 @@ extern "C"
 #define RADIO_DIO_2                                 GPIO( GPIO_PORTA, 16 )
 
 #define LED_RX                                      GPIO( GPIO_PORTB, 3 )
-#define LED_TX                                      GPIO( GPIO_PORTA, 27 )
-#define LED_D13                                     GPIO( GPIO_PORTA, 17 )
+#define LED_TX                                      GPIO( GPIO_PORTA, 17 )
+//#define LED_D13                                     GPIO( GPIO_PORTA, 17 )
 
 #if 0
 #define UART_TX                                     GPIO( GPIO_PORTA, 4 )

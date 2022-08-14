@@ -33,6 +33,8 @@ struct usart_sync_descriptor Usart0;
 
 void UartMcuInit( Uart_t *obj, uint8_t uartId, PinNames tx, PinNames rx )
 {
+    // XXX: port this
+#if 0
     obj->UartId = uartId;
 
     // Clock initialization
@@ -48,6 +50,7 @@ void UartMcuInit( Uart_t *obj, uint8_t uartId, PinNames tx, PinNames rx )
     gpio_set_pin_function( rx, PINMUX_PA05D_SERCOM0_PAD1 );
 
     usart_sync_enable( &Usart0 );
+#endif
 }
 
 void UartMcuConfig( Uart_t *obj, UartMode_t mode, uint32_t baudrate, WordLength_t wordLength, StopBits_t stopBits, Parity_t parity, FlowCtrl_t flowCtrl )

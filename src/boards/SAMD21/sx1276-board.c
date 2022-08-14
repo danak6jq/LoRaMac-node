@@ -99,13 +99,15 @@ void SX1276IoInit( void )
     ext_irq_init( );
 
     GpioInit( &SX1276.DIO0, RADIO_DIO_0, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    gpio_set_pin_function( RADIO_DIO_0, PINMUX_PB16A_EIC_EXTINT0 );
+    // PA20, EXTINT4
+    gpio_set_pin_function( RADIO_DIO_0, PINMUX_PA20A_EIC_EXTINT4 );
     GpioInit( &SX1276.DIO1, RADIO_DIO_1, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    // Must be setup to be trigged on both edges. See CONF_EIC_SENSE11 under hpl_eic_config.h
-    gpio_set_pin_function( RADIO_DIO_1, PINMUX_PA11A_EIC_EXTINT11 );
+    // Must be setup to be trigged on both edges. See CONF_EIC_SENSE18 under hpl_eic_config.h
+    // PA18, EXTINT2
+    gpio_set_pin_function( RADIO_DIO_1, PINMUX_PA18A_EIC_EXTINT2 );
     GpioInit( &SX1276.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    gpio_set_pin_function( RADIO_DIO_2, PINMUX_PA12A_EIC_EXTINT12 );
-    // XXX:
+    // PA16, EXTINT0
+    gpio_set_pin_function( RADIO_DIO_2, PINMUX_PA16A_EIC_EXTINT0 );
 }
 
 static void Dio0IrqHandler( void );
@@ -171,6 +173,8 @@ void SX1276IoIrqInit( DioIrqHandler **irqHandlers )
 
 void SX1276IoDeInit( void )
 {
+    // XXX: de-initialize pins?
+#if 0
     GpioInit( &SX1276.Spi.Nss, RADIO_NSS, PIN_OUTPUT, PIN_PUSH_PULL, PIN_PULL_UP, 1 );
     GpioInit( &rxen_pin, RXEN_PIN, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
     GpioInit( &txen_pin, TXEN_PIN, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
@@ -183,6 +187,7 @@ void SX1276IoDeInit( void )
     GpioInit( &SX1276.DIO2, RADIO_DIO_2, PIN_INPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
     gpio_set_pin_function( RADIO_DIO_2, PINMUX_PA12A_EIC_EXTINT12 );
     // XXX:
+   #endif
 }
 
 void SX1276IoDbgInit( void )
@@ -196,6 +201,7 @@ void SX1276IoDbgInit( void )
 void SX1276IoTcxoInit( void )
 {
     // XXX: no TCXO
+    // XXX:
 }
 
 void SX1276SetBoardTcxo( uint8_t state )
