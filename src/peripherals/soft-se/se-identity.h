@@ -102,8 +102,8 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_GEN_APP_KEY                                        \
              */                                                                                                     \
             .KeyID    = APP_KEY,                                                                                    \
-            .KeyValue = { 0xA6, 0x63, 0x59, 0x61, 0x15, 0x69, 0x7A, 0x26, 0x95, 0x87, 0x8E, 0x6B, 0x6F, 0x6F, 0xFB, \
-                         0x77 },                                                                                   \
+            .KeyValue = { 0xAa, 0x63, 0x59, 0x61, 0x15, 0x69, 0x7A, 0x26, 0x95, 0x87, 0x8E, 0x6B, 0x6F, 0x6F, 0xFB, \
+                         0x77 },                                                                                    \
         },                                                                                                          \
         {                                                                                                           \
             /*!                                                                                                     \
@@ -111,7 +111,7 @@ extern "C" {
              * WARNING: FOR 1.0.x DEVICES IT IS THE \ref LORAWAN_APP_KEY                                            \
              */                                                                                                     \
             .KeyID    = NWK_KEY,                                                                                    \
-            .KeyValue = { 0xA6, 0x63, 0x59, 0x61, 0x15, 0x69, 0x7A, 0x26, 0x95, 0x87, 0x8E, 0x6B, 0x6F, 0x6F, 0xFB, \
+            .KeyValue = { 0xAa, 0x63, 0x59, 0x61, 0x15, 0x69, 0x7A, 0x26, 0x95, 0x87, 0x8E, 0x6B, 0x6F, 0x6F, 0xFB, \
                          0x77 },                                                                                    \
         },                                                                                                          \
         {                                                                                                           \

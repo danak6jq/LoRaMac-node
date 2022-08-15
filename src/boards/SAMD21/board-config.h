@@ -65,15 +65,18 @@ extern "C"
 #define RADIO_DIO_2                                 GPIO( GPIO_PORTA, 16 )
 
 #define LED_RX                                      GPIO( GPIO_PORTB, 3 )
-#define LED_TX                                      GPIO( GPIO_PORTA, 17 )
-//#define LED_D13                                     GPIO( GPIO_PORTA, 17 )
+#define LED_TX                                      GPIO( GPIO_PORTA, 27 )
+#define LED_D13                                     GPIO( GPIO_PORTA, 17 )
 
-#if 0
-#define UART_TX                                     GPIO( GPIO_PORTA, 4 )
-#define UART_RX                                     GPIO( GPIO_PORTA, 5 )
-#define I2C_SDA                                     GPIO( GPIO_PORTA, 16 )
-#define I2C_SCL                                     GPIO( GPIO_PORTA, 17 )
-#endif
+#define UART_TX                                     GPIO( GPIO_PORTA, 10 )
+#define UART_RX                                     GPIO( GPIO_PORTA, 11 )
+#define I2C_SDA                                     GPIO( GPIO_PORTA, 22 )
+#define I2C_SCL                                     GPIO( GPIO_PORTA, 23 )
+
+#define EEPROM_MOSI                                 GPIO( GPIO_PORTA, 8)
+#define EEPROM_MISO                                 GPIO( GPIO_PORTA, 14)
+#define EEPROM_SCLK                                 GPIO( GPIO_PORTA, 9)
+#define EEPROM_CS                                   GPIO( GPIO_PORTA, 6)
 
 // Debug pins definition.
 #define RADIO_DBG_PIN_TX                            NC

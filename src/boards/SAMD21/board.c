@@ -27,7 +27,6 @@
 #include <hal_delay.h>
 #include <hal_timer.h>
 #include <hal_spi_m_sync.h>
-#include <hal_usart_sync.h>
 #include <hpl_rtc_base.h>
 #include <hpl_gclk_base.h>
 
@@ -44,6 +43,11 @@
 #include "rtc-board.h"
 #include "sx1276-board.h"
 #include "board.h"
+
+#include <peripheral_clk_config.h>
+#include <hpl_pm_base.h>
+#include <hal_spi_m_sync.h>
+
 
 /*
  * MCU objects
@@ -71,9 +75,10 @@ void BoardCriticalSectionEnd( uint32_t *mask )
 
 void BoardInitPeriph( void )
 {
-    GpioInit( &LedRx, LED_RX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    GpioInit( &LedTx, LED_TX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
-    // GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+
+    GpioInit( &LedRx, LED_RX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    GpioInit( &LedTx, LED_TX, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 1 );
+    GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 }
 
 void BoardInitMcu( void )
@@ -86,13 +91,11 @@ void BoardInitMcu( void )
 
     RtcInit( );
 
-#if 0
-    // XXX:
+    /* UART is for GPS input */
     UartInit( &Uart1, UART_1, UART_TX, UART_RX );
-    UartConfig( &Uart1, RX_TX, 921600, UART_8_BIT, UART_1_STOP_BIT, NO_PARITY, NO_FLOW_CTRL );
-#endif
+ //   UartConfig( &Uart1, RX_TX, 9600, UART_8_BIT, UART_1_STOP_BIT, NO_PARITY, NO_FLOW_CTRL );
 
-    SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
+     SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
     SX1276IoInit( );
 
 #if 0

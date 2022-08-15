@@ -48,7 +48,6 @@ list(APPEND ${PROJECT_NAME}_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/src/hal_sleep.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/src/hal_spi_m_sync.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/src/hal_timer.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/src/hal_usart_sync.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/utils/src/utils_assert.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/utils/src/utils_event.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hal/utils/src/utils_list.c"
@@ -61,7 +60,8 @@ list(APPEND ${PROJECT_NAME}_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/pm/hpl_pm.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/rtc/hpl_rtc.c"
     "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/sercom/hpl_sercom.c"
-    "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/sysctrl/hpl_sysctrl.c"
+    "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/sysctrl/hpl_sysctrl.c" 
+    "${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/usart/usart_lite.c" 
 )
 
 add_library(${PROJECT_NAME} OBJECT EXCLUDE_FROM_ALL ${${PROJECT_NAME}_SOURCES})
@@ -94,6 +94,7 @@ target_include_directories(${PROJECT_NAME} PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/rtc
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/sercom
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/sysctrl
+    ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hpl/usart 
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/hri
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/samd21a/include
     ${CMAKE_CURRENT_SOURCE_DIR}/../mcu/samd21/samd21a/include/component

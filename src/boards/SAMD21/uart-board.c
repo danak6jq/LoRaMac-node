@@ -23,39 +23,45 @@
  * \author    Marten Lootsma(TWTG) on behalf of Microchip/Atmel (c)2017
  */
 #include <peripheral_clk_config.h>
+#include <hpl_pm_base.h>
+#include <hpl_gclk_base.h>
 #include <hal_gpio.h>
-#include <hal_usart_sync.h>
+
+#include <hpl/usart/usart_lite.h>
 
 #include "board.h"
 #include "uart-board.h"
 
-struct usart_sync_descriptor Usart0;
+// struct usart_async_descriptor Usart0;
+// static uint8_t rxBuffer[128];
 
 void UartMcuInit( Uart_t *obj, uint8_t uartId, PinNames tx, PinNames rx )
 {
-    // XXX: port this
-#if 0
     obj->UartId = uartId;
 
     // Clock initialization
-    hri_gclk_write_PCHCTRL_reg( GCLK, SERCOM0_GCLK_ID_CORE, CONF_GCLK_SERCOM0_CORE_SRC | ( 1 << GCLK_PCHCTRL_CHEN_Pos ) );
-    hri_gclk_write_PCHCTRL_reg( GCLK, SERCOM0_GCLK_ID_SLOW, CONF_GCLK_SERCOM0_SLOW_SRC | ( 1 << GCLK_PCHCTRL_CHEN_Pos ) );
-    hri_mclk_set_APBCMASK_SERCOM0_bit( MCLK );
+	_pm_enable_bus_clock(PM_BUS_APBC, SERCOM0);
+	_gclk_enable_channel(SERCOM0_GCLK_ID_CORE, CONF_GCLK_SERCOM0_CORE_SRC);
 
+#if 0
     // USART initialization
-    usart_sync_init( &Usart0, SERCOM0, ( void * )NULL );
+    usart_async_init( &Usart0, SERCOM0, rxBuffer, sizeof(rxBuffer), ( void *) NULL);
+#endif
 
     // UASRT GPIO initialization
-    gpio_set_pin_function( tx, PINMUX_PA04D_SERCOM0_PAD0 );
-    gpio_set_pin_function( rx, PINMUX_PA05D_SERCOM0_PAD1 );
+    gpio_set_pin_function( tx, PINMUX_PA10C_SERCOM0_PAD2 );
+    gpio_set_pin_function( rx, PINMUX_PA11C_SERCOM0_PAD3 );
 
-    usart_sync_enable( &Usart0 );
+    USART_0_init();
+
+#if 0
+    usart_async_enable( &Usart0 );
 #endif
 }
 
 void UartMcuConfig( Uart_t *obj, UartMode_t mode, uint32_t baudrate, WordLength_t wordLength, StopBits_t stopBits, Parity_t parity, FlowCtrl_t flowCtrl )
 {
-    usart_sync_set_baud_rate( &Usart0, baudrate );
+    //usart_async_set_baud_rate( &Usart0, baudrate );
 }
 
 void UartMcuDeInit( Uart_t *obj )
@@ -65,15 +71,26 @@ void UartMcuDeInit( Uart_t *obj )
 
 uint8_t UartMcuPutChar( Uart_t *obj, uint8_t data )
 {
+#if 0
     if( io_write( &Usart0.io, &data, 1 ) == 0 )
     {
         return 1; // Busy
     }
+#endif
     return 0; // OK
 }
 
 uint8_t UartMcuGetChar( Uart_t *obj, uint8_t *data )
 {
+
+    if (USART_0_is_byte_received()) {
+        *data = USART_0_read_byte();
+        return (0);
+    } else {
+        return (1);
+    }
+
+#if 0
     if( io_read( &Usart0.io, data, 1 ) == 1 )
     {
         return 0; // OK
@@ -82,23 +99,29 @@ uint8_t UartMcuGetChar( Uart_t *obj, uint8_t *data )
     {
         return 1; // Busy
     }
+#endif
+    return (0);
 }
 
 uint8_t UartMcuPutBuffer( Uart_t *obj, uint8_t *buffer, uint16_t size )
 {
+#if 0
     if( io_write( &Usart0.io, buffer, size ) == 0 )
     {
         return 1; //Error
     }
+#endif
     return 0; // OK
 }
 
 uint8_t UartMcuGetBuffer( Uart_t *obj, uint8_t *buffer, uint16_t size, uint16_t *nbReadBytes )
 {
+#if 0
     *nbReadBytes = io_read( &Usart0.io, buffer, size );
     if( *nbReadBytes == 0 )
     {
         return 1; // Empty
     }
+#endif
     return 0; // OK
 }

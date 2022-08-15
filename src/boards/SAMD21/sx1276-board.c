@@ -240,6 +240,8 @@ SX1276SetRfTxPower( int8_t power )
     uint8_t paConfig = 0;
     uint8_t paDac = 0;
 
+    power -= 10;
+    
     paConfig = SX1276Read( REG_PACONFIG );
     paDac = SX1276Read( REG_PADAC );
 

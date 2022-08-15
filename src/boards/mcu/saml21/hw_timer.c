@@ -185,7 +185,6 @@ void RTC_Handler(void)
             HwTimerOverflowCallback();
         }
     }
-
 }
 
 /* eof hw_timer.c */
