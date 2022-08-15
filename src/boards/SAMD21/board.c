@@ -44,11 +44,6 @@
 #include "sx1276-board.h"
 #include "board.h"
 
-#include <peripheral_clk_config.h>
-#include <hpl_pm_base.h>
-#include <hal_spi_m_sync.h>
-
-
 /*
  * MCU objects
  */
