@@ -41,7 +41,7 @@
         // Select the active region for which the stack will be initialized.
         // You can choose between:
         // LORAMAC_REGION_EU868, LORAMAC_REGION_US915, ..
-        "ACTIVE_REGION":"LORAMAC_REGION_EU868",
+        "ACTIVE_REGION":"LORAMAC_REGION_US915",
 
         // Select the type of modulation, applicable to the ping-pong or
         // rx-sensi applications. You can choose between:
@@ -50,7 +50,7 @@
 
         // Target board, the following boards are supported:
         // NAMote72, NucleoL073 (Default), NucleoL152, NucleoL476, SAMR34, SKiM880B, SKiM980A, SKiM881AXL, B-L072Z-LRWAN1.
-        "BOARD":"NucleoL073",
+        "BOARD":"SAMD21",
 
         // MBED Radio shield selection. (Applies only to Nucleo platforms)
         // The following shields are supported:
@@ -67,7 +67,7 @@
         // Region support activation, Select the ones you want to support.
         // By default only REGION_EU868 support is enabled.
         "REGION_EU868":"ON",
-        "REGION_US915":"OFF",
+        "REGION_US915":"ON",
         "REGION_CN779":"OFF",
         "REGION_EU433":"OFF",
         "REGION_AU915":"OFF",
@@ -87,6 +87,11 @@
         "REGION_CN470_DEFAULT_CHANNEL_PLAN":"CHANNEL_PLAN_20MHZ_TYPE_A"
     },
     "files.associations": {
-        "se-identity.h": "c"
+        "se-identity.h": "c",
+        "samd21.h": "c",
+        "cstdlib": "c",
+        "eeprom-board.h": "c",
+        "peripheral_clk_config.h": "c",
+        "hal_spi_m_sync.h": "c"
     }
 }

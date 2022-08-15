@@ -39,9 +39,9 @@
 
 #ifndef ACTIVE_REGION
 
-#warning "No active region defined, LORAMAC_REGION_EU868 will be used as default."
+#warning "No active region defined, LORAMAC_REGION_US915 will be used as default."
 
-#define ACTIVE_REGION LORAMAC_REGION_EU868
+#define ACTIVE_REGION LORAMAC_REGION_US915
 
 #endif
 
@@ -55,7 +55,7 @@
 /*!
  * Defines the application data transmission duty cycle. 5s, value in [ms].
  */
-#define APP_TX_DUTYCYCLE                            5000
+#define APP_TX_DUTYCYCLE                            60000
 
 /*!
  * Defines a random delay for application data transmission duty cycle. 1s,
@@ -68,14 +68,14 @@
  *
  * \remark Please note that when ADR is enabled the end-device should be static
  */
-#define LORAWAN_ADR_STATE                           LORAMAC_HANDLER_ADR_ON
+#define LORAWAN_ADR_STATE                           LORAMAC_HANDLER_ADR_OFF
 
 /*!
  * Default datarate
  *
  * \remark Please note that LORAWAN_DEFAULT_DATARATE is used only when ADR is disabled 
  */
-#define LORAWAN_DEFAULT_DATARATE                    DR_0
+#define LORAWAN_DEFAULT_DATARATE                    DR_1
 
 /*!
  * LoRaWAN confirmed messages
@@ -92,7 +92,7 @@
  *
  * \remark Please note that ETSI mandates duty cycled transmissions. Use only for test purposes
  */
-#define LORAWAN_DUTYCYCLE_ON                        true
+#define LORAWAN_DUTYCYCLE_ON                        false
 
 /*!
  * LoRaWAN application port
@@ -114,13 +114,15 @@ typedef enum
  */
 static uint8_t AppDataBuffer[LORAWAN_APP_DATA_BUFFER_MAX_SIZE];
 
+extern uint8_t coords[];
+
 /*!
  * User application data structure
  */
 static LmHandlerAppData_t AppData =
 {
-    .Buffer = AppDataBuffer,
-    .BufferSize = 0,
+    .Buffer = coords,
+    .BufferSize = 18,
     .Port = 0,
 };
 
@@ -245,7 +247,7 @@ static volatile uint32_t TxPeriodicity = 0;
 /*!
  * LED GPIO pins objects
  */
-extern Gpio_t LedD13; // Tx
+extern Gpio_t LedRx, LedTx, LedD13; // Tx
 
 /*!
  * UART object used for command line interface handling
@@ -261,6 +263,10 @@ int main( void )
 
     BoardInitMcu( );
     BoardInitPeriph( );
+    
+    GpioWrite(&LedRx, 1);
+    GpioWrite(&LedTx, 1);
+    GpioWrite(&LedD13, 1);
 
     TimerInit( &Led1Timer, OnLed1TimerEvent );
     TimerSetValue( &Led1Timer, 25 );
@@ -306,6 +312,7 @@ int main( void )
     {
         // Tick the RTC to execute callback in context of the main loop (in stead of the IRQ)
         TimerProcess( );
+        GpioToggle(&LedD13);
 
         // Process characters sent over the command line interface
         CliProcess( &Uart1 );
@@ -454,17 +461,8 @@ static void PrepareTxFrame( void )
     {
         return;
     }
-
-    uint8_t channel = 0;
-
+    
     AppData.Port = LORAWAN_APP_PORT;
-
-    CayenneLppReset( );
-    CayenneLppAddDigitalInput( channel++, AppLedStateOn );
-    CayenneLppAddAnalogInput( channel++, BoardGetBatteryLevel( ) * 100 / 254 );
-
-    CayenneLppCopy( AppData.Buffer );
-    AppData.BufferSize = CayenneLppGetSize( );
 
     if( LmHandlerSend( &AppData, LmHandlerParams.IsTxConfirmed ) == LORAMAC_HANDLER_SUCCESS )
     {
