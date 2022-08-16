@@ -35,7 +35,7 @@ static char gpsBuffer[82];
 static enum { GP_BEGIN, GP_COMMA, GP_CHECK } gpsState = GP_BEGIN;
 static uint8_t gpsIndex;
 static char *gpsField[GPS_MAX_FIELDS];
-static char *gpsPtr;
+static char *gpsPtr = gpsBuffer;
 
 #define htonl(x) ( ((x)<<24 & 0xFF000000UL) | \
                    ((x)<< 8 & 0x00FF0000UL) | \
@@ -72,7 +72,7 @@ processGpsSentence(uint8_t check)
         return;
     }
 
-    if (strncmp(gpsField[0], "GPGGA", strlen("GPGGA")) != 0) {
+    if (strcmp(gpsField[0], "GPGGA") != 0) {
         // not the sentence we want
         return;
     }
@@ -132,7 +132,7 @@ processGpsChar(uint8_t c)
         }
         gpsIndex = 0;
         gpsPtr = gpsBuffer;
-        gpsField[gpsIndex] = gpsPtr;
+        gpsField[0] = gpsBuffer;
         gpsState = GP_COMMA;
         checkVal = 0;
         break;

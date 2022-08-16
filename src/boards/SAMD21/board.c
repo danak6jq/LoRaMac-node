@@ -76,6 +76,8 @@ void BoardInitPeriph( void )
     GpioInit( &LedD13, LED_D13, PIN_OUTPUT, PIN_PUSH_PULL, PIN_NO_PULL, 0 );
 }
 
+extern void initFlash();
+
 void BoardInitMcu( void )
 {
     init_mcu( );
@@ -89,6 +91,8 @@ void BoardInitMcu( void )
     /* UART is for GPS input */
     UartInit( &Uart1, UART_1, UART_TX, UART_RX );
  //   UartConfig( &Uart1, RX_TX, 9600, UART_8_BIT, UART_1_STOP_BIT, NO_PARITY, NO_FLOW_CTRL );
+
+    initFlash();
 
      SpiInit( &SX1276.Spi, SPI_1, RADIO_MOSI, RADIO_MISO, RADIO_SCLK, NC );
     SX1276IoInit( );
